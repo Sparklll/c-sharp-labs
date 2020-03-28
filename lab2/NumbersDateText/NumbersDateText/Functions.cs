@@ -34,11 +34,14 @@ namespace NumbersDateText
                 OrderByDescending(word => word.Length).
                 ToList();
 
-            int outputWidth = selectedWords.First().ToString().Length;
-            string formatPattern = "{0," + outputWidth + "}";
-            foreach (var word in selectedWords)
+            if (selectedWords.Count != 0)
             {
-                Console.WriteLine(String.Format(formatPattern, word));
+                int outputWidth = selectedWords.First().ToString().Length;
+                string formatPattern = "{0," + outputWidth + "}";
+                foreach (var word in selectedWords)
+                {
+                    Console.WriteLine(String.Format(formatPattern, word));
+                }
             }
         }
 
@@ -48,6 +51,20 @@ namespace NumbersDateText
         {
             // Y/y are not included due to uncertainty
             return "AEIOUaeiou".Contains(c);
+        }
+
+        private char GetNextEnglishAlphabetLetter(char c)
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (alphabet.IndexOf(c) == 25)
+            {
+                return alphabet[0];
+            }
+            else if (alphabet.IndexOf(c) == 51)
+            {
+                return alphabet[26];
+            }
+            return alphabet[alphabet.IndexOf(c) + 1];
         }
 
         public string ReplaceLettersAfterVowels(string s)
@@ -60,13 +77,7 @@ namespace NumbersDateText
                 {
                     if (IsVowel(s[i - 1]))
                     {
-                        if (s[i] == 'z' || s[i] == 'Z')
-                        {
-                            resultString.Append((char) (s[i] - 25));
-                            continue;
-                        }
-
-                        resultString.Append((char) (s[i] + 1));
+                        resultString.Append(GetNextEnglishAlphabetLetter(s[i]));
                         continue;
                     }
                 }
