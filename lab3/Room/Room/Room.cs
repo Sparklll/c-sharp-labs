@@ -51,6 +51,11 @@ namespace Room
             RoomDescription = roomDescription;
         }
 
+        public static double CalculateRoomIndex(Room room, double lightingSuspensionHeight)
+        {
+            return room.GetRoomArea() / ((room.Length + room.Width) * lightingSuspensionHeight);
+        }
+
         public double GetRoomArea()
         {
             return Length * Width;
